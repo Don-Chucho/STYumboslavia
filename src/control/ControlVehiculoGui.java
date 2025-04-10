@@ -20,7 +20,6 @@ import vista.*;
 public class ControlVehiculoGui implements ActionListener{
 
     private VistaVehiculo vistaVehic;
-    private VistaPropietario vistaProp;
     private Vehiculo vehiculo;
     private List<Vehiculo> listadoAutos= new ArrayList<>();
     
@@ -28,7 +27,10 @@ public class ControlVehiculoGui implements ActionListener{
         
         this.vistaVehic= new VistaVehiculo();
         this.vistaVehic.setVisible(true);
+        
         this.vistaVehic.jbtn_aceptar.addActionListener(this);
+        this.vistaVehic.jbtn_consultar.addActionListener(this);
+        
         this.listadoAutos= listaAuts;
         
     }
@@ -66,8 +68,28 @@ public class ControlVehiculoGui implements ActionListener{
             }catch(NumberFormatException exc){
                 JOptionPane.showMessageDialog(vistaVehic, "Debe ingresar el año en números");
             }
-            if(this.vehiculo.getPlaca()!=null && this.vehiculo.getAnhoFab()!= 0)
+            if(this.vehiculo.getPlaca()!=null && this.vehiculo.getAnhoFab()!= 0){
                 this.listadoAutos.add(vehiculo);
+                JOptionPane.showMessageDialog(vistaVehic, "Vehículo ingresado con éxito!!!");
+                
+                //Se limpian los campos del formulario después del ingreso del vehículo a la lista
+                this.vistaVehic.jtf_placa.setText("");
+                this.vistaVehic.jtf_marca.setText("");
+                this.vistaVehic.jtf_anhoFab.setText("");
+            }
+        }
+        
+        //Botón Consultar Vehículo
+        if(e.getSource() == this.vistaVehic.jbtn_consultar){
+            for(Vehiculo v: this.listadoAutos){
+                if(v.getPlaca().equals(this.vistaVehic.jtf_placa.getText())){
+                    this.vistaVehic.jtf_marca.setText(v.getMarca());
+                    this.vistaVehic.jtf_anhoFab.setText(v.getAnhoFab()+"");
+                    System.out.println("ingreso");
+                }else{
+                    JOptionPane.showMessageDialog(vistaVehic, "Esa placa no se encuentra registrada!!!");
+                }
+            }
         }
     }
     
